@@ -19,16 +19,18 @@ function App() {
 
   useEffect(() => {
     const words = text.split(" ");
-    const correctedWords = words.map((word) => {
+    let firstCorrection = "";
+
+    words.some((word) => {
       const correctedWord = customDictionary[word.toLowerCase()];
-      return correctedWord || word;
+      if (correctedWord && correctedWord !== word) {
+        firstCorrection = correctedWord;
+        return true; // break the loop
+      }
+      return false;
     });
 
-    const firstCorrection = correctedWords.find(
-      (word, idx) => word !== words[idx]
-    );
-
-    setSuggestedText(firstCorrection || "");
+    setSuggestedText(firstCorrection);
   }, [text]); // Run this effect whenever 'text' changes
 
   return (
